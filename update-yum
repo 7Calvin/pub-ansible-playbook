@@ -1,9 +1,13 @@
 ---
 - hosts: all
-
-  become: true
+  become: yes
   tasks:
-    - name: update yum packages
-      apt:
-        upgrade: yes
-        update_cache: yes
+    - name: Update all packages to the latest version
+      yum:
+        name: '*'
+        state: latest
+      register: yum_update_result
+
+    - name: Print update result
+      debug:
+        var: yum_update_result
