@@ -23,6 +23,6 @@
       tags: 
         - docker
     - name: Run Nginx container
-      command: docker run -d --name webserver -p 80:80 -v /etc/nginx/nginx.conf:/etc/nginx/nginx.conf:ro nginx
+      command: docker run -d --name webserver -p 80:80 nginx
       tags: 
         - docker
