@@ -1,0 +1,43 @@
+---
+- name: Create a Web Server Container on CentOS
+  hosts: all  # Replace with the target CentOS host
+  become: yes
+  tasks:
+    - name: Install Docker
+      yum:
+        name: docker
+        state: present
+      tags: 
+        - docker
+
+    - name: Start and enable Docker service
+      systemd:
+        name: docker
+        enabled: yes
+        state: started
+      tags: 
+        - docker
+
+    - name: Pull Nginx Docker image
+      command: docker pull nginx
+      tags: 
+        - docker
+
+    - name: Create a directory for Nginx config
+      file:
+        path: /etc/nginx
+        state: directory
+      tags: 
+        - docker
+
+    - name: Copy Nginx config file to the host
+      copy:
+        src: nginx.conf  # Put your Nginx configuration file in the same directory as this playbook
+        dest: /etc/nginx/nginx.conf
+      tags: 
+        - docker
+
+    - name: Run Nginx container
+      command: docker run -d --name webserver -p 80:80 -v /etc/nginx/nginx.conf:/etc/nginx/nginx.conf:ro nginx
+      tags: 
+        - docker
