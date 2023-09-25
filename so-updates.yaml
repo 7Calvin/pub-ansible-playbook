@@ -1,0 +1,19 @@
+---
+- name: Update CentOS, Debian/Ubuntu, and Windows Systems
+  hosts: all  # Replace with the target hosts or group of hosts
+  become: yes
+  tasks:
+    - name: Update CentOS packages
+      yum:
+        name: '*'
+        state: latest
+      when: ansible_distribution == 'CentOS'
+
+    - name: Update Debian/Ubuntu packages
+      apt:
+        upgrade: yes
+      when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
+
+    - name: Update Windows using Windows Update
+      win_updates:
+      when: ansible_os_family == 'Windows'
